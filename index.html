@@ -310,7 +310,37 @@
     <a href="#top">Retour en haut ↑</a>
 
   </footer>
+  <!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<!-- Inscription / Connexion -->
+<div id="authModal" class="auth-modal" hidden>
+  <div class="auth-box">
+    <button id="closeAuth" type="button">✕</button>
+
+    <h2>NASRI <span>REACTION ROOM</span></h2>
+    <p id="authTitle">Créer ton compte</p>
+
+    <form id="authForm">
+      <input id="authEmail" type="email"
+             placeholder="Adresse Email" required>
+
+      <input id="authPassword" type="password"
+             placeholder="Mot de passe (6 caractères minimum)"
+             minlength="6" required>
+
+      <button type="submit" id="authSubmit">
+        Créer mon compte
+      </button>
+    </form>
+
+    <p id="authMessage" role="status"></p>
+
+    <button id="switchAuth" type="button">
+      Déjà un compte ? Connexion
+    </button>
+  </div>
+</div>
   <script src="script.js"></script>
 
 </body>
