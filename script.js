@@ -1,9 +1,4 @@
 
-// ==========================================
-// NASRI REACTION ROOM - COMPLETE SYSTEM
-// ==========================================
-
-// SUPABASE CONNECTION
 const SUPABASE_URL = "https://pkpqbnxsfgvsikelauxb.supabase.co";
 const SUPABASE_KEY = "sb_publishable_eoHdYYrMc9K-GQzW2MlVSw_HJtRyMoB";
 
@@ -12,378 +7,194 @@ const db = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// ==========================================
-// VIDEOS SYSTEM
-// ==========================================
+// Elements
+const siteContent = document.getElementById("siteContent");
+const authModal = document.getElementById("authModal");
+const authForm = document.getElementById("authForm");
+const authEmail = document.getElementById("authEmail");
+const authPassword = document.getElementById("authPassword");
+const authMessage = document.getElementById("authMessage");
+const authTitle = document.getElementById("authTitle");
+const authSubmit = document.getElementById("authSubmit");
+const switchAuth = document.getElementById("switchAuth");
+const subscribeBtn = document.getElementById("subscribeBtn");
+const subscriberCount = document.getElementById("subscriberCount");
 
-const searchInput = document.querySelector('#search');
-const cards = [...document.querySelectorAll('.video-card')];
-const filters = [...document.querySelectorAll('.filter')];
-const emptyState = document.querySelector('#emptyState');
+let isLoginMode = false;
 
-let activeFilter = 'all';
-let activeCard = null;
+// Show site only when logged in
+function updateAccess(session) {
+  const loggedIn = Boolean(session);
 
-cards.forEach(card => {
-  const player = card.querySelector('.video-player');
-  const oldIframe = player.querySelector('iframe');
+  siteContent.hidden = !loggedIn;
+  authModal.hidden = loggedIn;
 
-  if (!oldIframe) return;
+  document.body.style.overflow = loggedIn ? "" : "hidden";
 
-  const videoId = new URL(oldIframe.src).pathname.split('/').pop();
-  card.dataset.videoId = videoId;
-
-  showCover(card);
-});
-
-function showCover(card) {
-  const player = card.querySelector('.video-player');
-  player.innerHTML = '';
-
-  const cover = document.createElement('button');
-  cover.className = 'video-cover';
-  cover.type = 'button';
-
-  const img = document.createElement('img');
-  img.src = `https://img.youtube.com/vi/${card.dataset.videoId}/hqdefault.jpg`;
-  img.alt = 'Couverture vidéo';
-
-  cover.appendChild(img);
-  player.appendChild(cover);
-
-  cover.addEventListener('click', () => playCard(card));
-}
-
-function playCard(card) {
-  if (activeCard && activeCard !== card) {
-    showCover(activeCard);
+  if (loggedIn) {
+    loadSubscriberCount();
   }
-
-  const player = card.querySelector('.video-player');
-  const videoId = card.dataset.videoId;
-
-  const iframe = document.createElement('iframe');
-
-  iframe.src =
-    `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`;
-
-  iframe.title = card.querySelector('h3')?.textContent || 'NASRI Reaction';
-  iframe.allow =
-    'autoplay; encrypted-media; picture-in-picture; gyroscope; accelerometer';
-
-  iframe.allowFullscreen = true;
-
-  player.innerHTML = '';
-  player.appendChild(iframe);
-
-  activeCard = card;
 }
 
-// YOUTUBE TITLES
-
-cards.forEach(async card => {
-  const videoId = card.dataset.videoId;
-  const title = card.querySelector('h3');
-
-  if (!videoId || !title) return;
-
-  try {
-    const response = await fetch(
-      `https://www.youtube.com/oembed?url=${encodeURIComponent(
-        'https://www.youtube.com/watch?v=' + videoId
-      )}&format=json`
-    );
-
-    if (!response.ok) throw new Error('Title unavailable');
-
-    const data = await response.json();
-
-    title.textContent = data.title;
-
-    card.dataset.search =
-      (card.dataset.search + ' ' + data.title).toLowerCase();
-
-    updateCards();
-
-  } catch (error) {
-    console.log('Titre indisponible:', videoId);
-  }
-});
-
-// SEARCH AND FILTERS
-
-function updateCards() {
-  const query = searchInput.value.trim().toLowerCase();
-  let visible = 0;
-
-  cards.forEach(card => {
-    const categories = card.dataset.category.split(' ');
-
-    const matchesFilter =
-      activeFilter === 'all' || categories.includes(activeFilter);
-
-    const matchesSearch =
-      (card.dataset.search + ' ' + card.innerText)
-        .toLowerCase().includes(query);
-
-    const show = matchesFilter && matchesSearch;
-
-    card.hidden = !show;
-
-    if (show) visible++;
-  });
-
-  emptyState.hidden = visible !== 0;
-}
-
-filters.forEach(button => {
-  button.addEventListener('click', () => {
-    activeFilter = button.dataset.filter;
-
-    filters.forEach(item =>
-      item.classList.toggle('active', item === button)
-    );
-
-    updateCards();
-  });
-});
-
-searchInput.addEventListener('input', updateCards);
-
-updateCards();
-
-// ==========================================
-// NASRI AUTHENTICATION SYSTEM
-// ==========================================
-
-const subscribeBtn = document.querySelector('#subscribeBtn');
-const modal = document.querySelector('#authModal');
-const authForm = document.querySelector('#authForm');
-const authMessage = document.querySelector('#authMessage');
-
-const authEmail = document.querySelector('#authEmail');
-const authPassword = document.querySelector('#authPassword');
-
-const authTitle = document.querySelector('#authTitle');
-const authSubmit = document.querySelector('#authSubmit');
-const switchAuth = document.querySelector('#switchAuth');
-
-let loginMode = false;
-
-// OPEN MODAL
-
-subscribeBtn.addEventListener('click', async () => {
-
+// Check current login
+async function checkLogin() {
   const { data, error } = await db.auth.getSession();
 
   if (error) {
-    authMessage.textContent = error.message;
-    modal.hidden = false;
+    console.error("Session error:", error.message);
+    updateAccess(null);
     return;
   }
 
-  if (data.session) {
-    const { error: logoutError } = await db.auth.signOut();
+  updateAccess(data.session);
+}
 
-    if (logoutError) {
-      authMessage.textContent = logoutError.message;
-      modal.hidden = false;
-      return;
-    }
-
-    subscribeBtn.textContent = "+ S'abonner";
-    return;
-  }
-
-  modal.hidden = false;
-  authMessage.textContent = '';
+// Auth state changes
+db.auth.onAuthStateChange((_event, session) => {
+  updateAccess(session);
 });
 
-// CLOSE MODAL
+// Switch between signup and login
+switchAuth.addEventListener("click", () => {
+  isLoginMode = !isLoginMode;
 
-document.querySelector('#closeAuth').addEventListener('click', () => {
-  modal.hidden = true;
+  authTitle.textContent = isLoginMode
+    ? "Connexion à ton compte"
+    : "Créer ton compte";
+
+  authSubmit.textContent = isLoginMode
+    ? "Se connecter"
+    : "Créer mon compte";
+
+  switchAuth.textContent = isLoginMode
+    ? "Pas encore de compte ? Inscription"
+    : "Déjà un compte ? Connexion";
+
+  authMessage.textContent = "";
 });
 
-// SWITCH LOGIN / SIGNUP
-
-switchAuth.addEventListener('click', () => {
-
-  loginMode = !loginMode;
-
-  authTitle.textContent = loginMode
-    ? 'Connexion'
-    : 'Créer ton compte';
-
-  authSubmit.textContent = loginMode
-    ? 'Se connecter'
-    : 'Créer mon compte';
-
-  switchAuth.textContent = loginMode
-    ? 'Créer un compte'
-    : 'Déjà un compte ? Connexion';
-
-  authMessage.textContent = '';
-});
-
-// SIGNUP AND LOGIN
-
-authForm.addEventListener('submit', async (e) => {
-
-  e.preventDefault();
+// Signup / Login
+authForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
 
   const email = authEmail.value.trim();
   const password = authPassword.value;
 
   authSubmit.disabled = true;
-  authMessage.textContent = 'Chargement...';
+  authMessage.textContent = "Chargement...";
 
   try {
-
     let result;
 
-    if (loginMode) {
-
+    if (isLoginMode) {
       result = await db.auth.signInWithPassword({
         email,
         password
       });
-
     } else {
-
       result = await db.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo:
-            'https://nasri-reaction.github.io/nasri-reaction_/'
+          emailRedirectTo: window.location.origin +
+            window.location.pathname
         }
       });
-
     }
 
     if (result.error) {
-      authMessage.textContent = result.error.message;
-      return;
+      throw result.error;
     }
 
-    if (!loginMode && !result.data.session) {
-
+    if (isLoginMode) {
+      authMessage.textContent = "Connexion réussie !";
+      updateAccess(result.data.session);
+    } else if (result.data.session) {
+      authMessage.textContent = "Compte créé avec succès !";
+      updateAccess(result.data.session);
+    } else {
       authMessage.textContent =
-        'Compte créé ! Vérifie ton Email pour confirmer ton inscription.';
-
-      return;
+        "Compte créé ! Vérifie ton email pour confirmer ton inscription.";
     }
-
-    authMessage.textContent =
-      'Bienvenue dans NASRI REACTION ROOM !';
-
-    subscribeBtn.textContent = 'Déconnexion';
-
-    await updateCount();
-
-    setTimeout(() => {
-      modal.hidden = true;
-      authForm.reset();
-    }, 1500);
 
   } catch (error) {
-
-    authMessage.textContent =
-      'Une erreur est survenue. Réessaie.';
-
-    console.error(error);
-
+    authMessage.textContent = error.message;
   } finally {
-
     authSubmit.disabled = false;
-
   }
-
 });
 
-// ==========================================
-// SUBSCRIBER COUNTER
-// ==========================================
-
-async function updateCount() {
-
-  const counter = document.querySelector('#subscriberCount');
-
-  const { data, error } = await db.rpc(
-    'get_subscriber_count'
-  );
+// Logout button
+subscribeBtn.addEventListener("click", async () => {
+  const { error } = await db.auth.signOut();
 
   if (error) {
-    console.error('Counter error:', error);
-    return;
+    alert("Erreur: " + error.message);
   }
-
-  counter.textContent = Number(data).toLocaleString('fr-FR');
-}
-
-// ==========================================
-// AUTH SESSION
-// ==========================================
-
-async function checkSession() {
-
-  const { data, error } = await db.auth.getSession();
-
-  if (error) {
-    console.error(error);
-    return;
-  }
-
-  subscribeBtn.textContent = data.session
-    ? 'Déconnexion'
-    : "+ S'abonner";
-
-  await updateCount();
-}
-
-db.auth.onAuthStateChange((event, session) => {
-
-  subscribeBtn.textContent = session
-    ? 'Déconnexion'
-    : "+ S'abonner";
-
-  if (event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
-    setTimeout(updateCount, 0);
-  }
-
 });
-// ===== NASRI: LOGIN REQUIRED =====
-(function () {
-  const modal = document.getElementById("authModal");
 
-  if (!modal) {
-    console.error("authModal not found");
+// Subscriber count
+async function loadSubscriberCount() {
+  const { data, error } = await db.rpc("get_subscriber_count");
+
+  if (error) {
+    console.error("Subscriber count error:", error.message);
     return;
   }
 
-  function updateAccess(session) {
-    modal.hidden = !!session;
-    document.body.style.overflow = session ? "" : "hidden";
-  }
+  subscriberCount.textContent = data ?? 0;
+}
 
-  // Check login when the website opens
-  db.auth.getSession().then(({ data, error }) => {
-    if (error) {
-      console.error(error);
-      updateAccess(null);
-      return;
-    }
+// Video search and filters
+const searchInput = document.getElementById("search");
+const videoCards = [...document.querySelectorAll(".video-card")];
+const filterButtons = [...document.querySelectorAll(".filter")];
+const emptyState = document.getElementById("emptyState");
 
-    updateAccess(data.session);
+let currentFilter = "all";
+
+function filterVideos() {
+  const query = searchInput.value.toLowerCase().trim();
+  let visibleCount = 0;
+
+  videoCards.forEach((card) => {
+    const categories = card.dataset.category || "";
+    const searchText = (
+      card.dataset.search + " " + card.textContent
+    ).toLowerCase();
+
+    const matchesFilter =
+      currentFilter === "all" ||
+      categories.split(" ").includes(currentFilter);
+
+    const matchesSearch = searchText.includes(query);
+    const visible = matchesFilter && matchesSearch;
+
+    card.hidden = !visible;
+
+    if (visible) visibleCount++;
   });
 
-  // Show the login window again after logout
-  db.auth.onAuthStateChange((_event, session) => {
-    updateAccess(session);
-  });
-})();
-checkSession();
+  emptyState.hidden = visibleCount !== 0;
+}
 
-console.log('NASRI REACTION ROOM loaded successfully!');
+searchInput.addEventListener("input", filterVideos);
+
+filterButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    filterButtons.forEach((item) =>
+      item.classList.remove("active")
+    );
+
+    button.classList.add("active");
+    currentFilter = button.dataset.filter;
+
+    filterVideos();
+  });
+});
+
+// Start
+checkLogin();
+
+console.log("NASRI REACTION ROOM loaded successfully!");
 
