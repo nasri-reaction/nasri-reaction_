@@ -1114,10 +1114,14 @@ h2 span {
     flex: 1;
   }
 }
-.instagram-icon {
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  vertical-align: middle;
-  margin-right: 7px;
+.instagram-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.instagram-logo {
+  font-size: 25px;
+  font-weight: bold;
+  line-height: 1;
 }
