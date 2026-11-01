@@ -5,344 +5,305 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#11131a">
-  <meta name="description" content="Retrouve les réactions, découvertes rap et vidéos de NASRI.">
+  <meta name="description" content="NASRI Reaction Room">
   <title>NASRI — Reaction Room</title>
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <div class="topline">
-    <span class="pulse"></span>
-    NASRI REACTION ROOM
-    <span class="topline-right">TUNISIA · 100% RAP & RÉACTIONS</span>
-  </div>
+  <!-- SITE CONTENT: caché avant connexion -->
+  <div id="siteContent" hidden>
 
-  <header class="nav wrap">
-    <a class="brand" href="#top" aria-label="NASRI accueil">
-      <span class="brand-mark">N<span>!</span></span>
-      <span>NASRI<small>REACTION ROOM</small></span>
-    </a>
+    <div class="topline">
+      <span class="pulse"></span>
+      NASRI REACTION ROOM
+      <span class="topline-right">TUNISIA · 100% RAP & RÉACTIONS</span>
+    </div>
 
-    <nav>
-      <a href="#videos">Vidéos</a>
-      <a href="#about">À propos</a>
-      <a class="nav-cta"
-         href="https://www.youtube.com/channel/UCsWZjmuQrQd94xNVlKKpLTw"
-         target="_blank" rel="noopener noreferrer">YouTube ↗</a>
-    </nav>
-  </header>
-
-  <main id="top" class="wrap">
-
-    <!-- CREATOR PRO PROFILE -->
-    <section class="creator-profile">
-
-      <div class="profile-cover">
-        <span class="cover-tag">NASRI OFFICIAL</span>
-        <span class="cover-decoration">NR</span>
-      </div>
-
-      <div class="profile-content">
-
-        <div class="profile-top">
-         <img class="creator-avatar" src="profils.jpg" alt="NASRI">
-
-          <div class="profile-details">
-            <span class="creator-label">OFFICIAL CREATOR</span>
-            <h1>NASRI REACTION ROOM</h1>
-            <p class="creator-handle">@nasri_officieel</p>
-            <span class="creator-location">🇹🇳 Tunisia</span>
-          </div>
-        </div>
-
-        <div class="profile-bio">
-          <h2>Créateur de Contenu Vidéo & Reels</h2>
-          <p>
-            ✨ Bienvenue sur la plateforme officielle de NASRI !
-            Découvrez mes réactions, mes vidéos et mes meilleurs moments.
-          </p>
-        </div>
-
-        <div class="creator-actions">
-
-          <button id="subscribeBtn" class="subscribe-btn">
-            + S'abonner
-          </button>
-
-          <a class="instagram-btn"
-   href="https://www.instagram.com/nasri_officieel?igsh=bG84eTJ1MHdnNmoz"
-   target="_blank"
-   rel="noopener noreferrer">
-   <span class="instagram-logo">◎</span>
-   Instagram ↗
-</a>
-
-        </div>
-
-        <div class="profile-stats">
-          <div>
-            <strong id="subscriberCount">0</strong>
-            <span>Abonnés</span>
-          </div>
-
-          <div>
-            <strong>VIDEO</strong>
-            <span>Content Creator</span>
-          </div>
-
-          <div>
-            <strong>REACTION</strong>
-            <span>My Passion</span>
-          </div>
-        </div>
-
-      </div>
-    </section>
-
-    <!-- HERO -->
-    <section class="hero">
-
-      <div class="hero-copy">
-        <p class="eyebrow">
-          <span class="eyebrow-line"></span>
-          LE RAP, VU PAR NASRI
-        </p>
-
-        <h1>On écoute.<br><em>On réagit.</em><br>On débat.</h1>
-
-        <p class="hero-text">
-          Les nouveautés, les surprises et les sons qui font parler.
-          Entre dans la Reaction Room.
-        </p>
-
-        <div class="hero-actions">
-          <a class="button button-primary" href="#videos">
-            Découvrir les vidéos <span>↘</span>
-          </a>
-
-          <a class="button button-quiet" href="#about">
-            Qui est NASRI ?
-          </a>
-        </div>
-
-        <div class="hero-note">
-          <span class="note-dot"></span>
-          NOUVELLES RÉACTIONS · VIBES TUNISIENNES
-        </div>
-      </div>
-
-      <div class="hero-art" aria-label="Illustration graphique NASRI">
-        <div class="art-orbit orbit-one"></div>
-        <div class="art-orbit orbit-two"></div>
-        <div class="art-sticker">PLAY<br><b>IT LOUD</b></div>
-        <div class="art-big">N<span>!</span></div>
-        <div class="art-caption">
-          <span>REACTION</span>
-          <strong>ROOM_01</strong>
-        </div>
-
-        <div class="art-bars">
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-          <i></i><i></i><i></i><i></i><i></i><i></i>
-        </div>
-
-        <span class="art-cross cross-one">✳</span>
-        <span class="art-cross cross-two">✳</span>
-      </div>
-
-    </section>
-
-    <!-- VIDEOS -->
-    <section id="videos" class="videos-section">
-
-      <div class="section-heading">
-        <div>
-          <p class="eyebrow">LE DERNIER CONTENU</p>
-          <h2>La sélection <span>NASRI.</span></h2>
-        </div>
-
-        <label class="search-box">
-          <span>⌕</span>
-          <input id="search" type="search"
-                 placeholder="Chercher un son…"
-                 aria-label="Chercher une vidéo">
-        </label>
-      </div>
-
-      <div class="filters" role="group" aria-label="Filtrer les vidéos">
-        <button class="filter active" data-filter="all">Tout <b>04</b></button>
-        <button class="filter" data-filter="rap">Rap <b>04</b></button>
-        <button class="filter" data-filter="reaction">Réactions <b>04</b></button>
-      </div>
-
-      <div class="video-grid" id="videoGrid">
-
-        <article class="video-card"
-                 data-category="rap reaction"
-                 data-search="artmasta esserpen tesla reaction bpUnf12G7Fg">
-
-          <div class="video-player">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/bpUnf12G7Fg"
-              title="NASRI Reaction - Tesla"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-
-          <div class="card-meta">
-            <span>RAP · RÉACTION</span>
-            <span>NASRI</span>
-          </div>
-
-          <h3>Artmasta ft Esserpent — Tesla</h3>
-          <p>La réaction de NASRI.</p>
-        </article>
-
-        <article class="video-card"
-                 data-category="rap reaction"
-                 data-search="3paradox3 مضاد داء الكلب diss track 3FgbdpGfkNs">
-
-          <div class="video-player">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/3FgbdpGfkNs"
-              title="NASRI Reaction - 3PARADOX3"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-
-          <div class="card-meta">
-            <span>DISS TRACK · RÉACTION</span>
-            <span>NASRI</span>
-          </div>
-
-          <h3>3PARADOX3 — مضاد داء الكلب</h3>
-          <p>Écoute, réaction et débat en commentaires.</p>
-        </article>
-
-        <article class="video-card"
-                 data-category="rap reaction"
-                 data-search="nasri reaction GoE8GWlmkLM">
-
-          <div class="video-player">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/GoE8GWlmkLM"
-              title="NASRI Reaction video 4"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-
-          <div class="card-meta">
-            <span>RAP · RÉACTION</span>
-            <span>NASRI</span>
-          </div>
-
-          <h3>NASRI — Réaction 4</h3>
-          <p>Regarde ma nouvelle réaction !</p>
-        </article>
-
-        <article class="video-card"
-                 data-category="rap reaction"
-                 data-search="nasri reaction Euu1zJXkTMw">
-
-          <div class="video-player">
-            <iframe
-              src="https://www.youtube-nocookie.com/embed/Euu1zJXkTMw"
-              title="NASRI Reaction video 5"
-              loading="lazy"
-              allowfullscreen></iframe>
-          </div>
-
-          <div class="card-meta">
-            <span>RAP · RÉACTION</span>
-            <span>NASRI</span>
-          </div>
-
-          <h3>NASRI — Réaction 5</h3>
-          <p>Regarde ma nouvelle réaction !</p>
-        </article>
-
-      </div>
-
-      <p class="empty-state" id="emptyState" hidden>
-        Aucune vidéo trouvée. Essaie un autre mot-clé.
-      </p>
-
-    </section>
-
-    <!-- ABOUT -->
-    <section id="about" class="about-band">
-
-      <div class="about-mark">N<span>!</span></div>
-
-      <div>
-        <p class="eyebrow">DERRIÈRE LE MICRO ? NON, DEVANT L’ÉCRAN.</p>
-        <h2>Bienvenue dans mon univers.</h2>
-        <p>
-          Moi, c’est NASRI. Ici, on découvre les sons,
-          on partage nos avis et on garde le débat respectueux.
-          Le prochain son à réagir ? C’est toi qui proposes.
-        </p>
-      </div>
-
-      <a class="button button-primary"
-         href="https://www.youtube.com/channel/UCsWZjmuQrQd94xNVlKKpLTw"
-         target="_blank"
-         rel="noopener noreferrer">
-        Rejoindre la chaîne ↗
+    <header class="nav wrap">
+      <a class="brand" href="#top">
+        <span class="brand-mark">N<span>!</span></span>
+        <span>NASRI<small>REACTION ROOM</small></span>
       </a>
 
-    </section>
+      <nav>
+        <a href="#videos">Vidéos</a>
+        <a href="#about">À propos</a>
+        <a class="nav-cta"
+           href="https://www.youtube.com/channel/UCsWZjmuQrQd94xNVlKKpLTw"
+           target="_blank" rel="noopener noreferrer">YouTube ↗</a>
+      </nav>
+    </header>
 
-  </main>
+    <main id="top" class="wrap">
 
-  <!-- FOOTER -->
-  <footer class="wrap footer">
+      <!-- PROFILE -->
+      <section class="creator-profile">
 
-    <a class="brand footer-brand" href="#top">
-      <span class="brand-mark">N<span>!</span></span>
-      <span>NASRI<small>REACTION ROOM</small></span>
-    </a>
+        <div class="profile-cover">
+          <span class="cover-tag">NASRI OFFICIAL</span>
+          <span class="cover-decoration">NR</span>
+        </div>
 
-    <span>Fait avec passion en Tunisie 🇹🇳</span>
+        <div class="profile-content">
 
-    <a href="#top">Retour en haut ↑</a>
+          <div class="profile-top">
+            <img class="creator-avatar" src="profils.jpg" alt="NASRI">
 
-  </footer>
-  <!-- Supabase -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+            <div class="profile-details">
+              <span class="creator-label">OFFICIAL CREATOR</span>
+              <h1>NASRI REACTION ROOM</h1>
+              <p class="creator-handle">@nasri_officieel</p>
+              <span class="creator-location">🇹🇳 Tunisia</span>
+            </div>
+          </div>
 
-<!-- Inscription / Connexion -->
-<div id="authModal" class="auth-modal" hidden>
-  <div class="auth-box">
-    <button id="closeAuth" type="button">✕</button>
+          <div class="profile-bio">
+            <h2>Créateur de Contenu Vidéo & Reels</h2>
+            <p>
+              ✨ Bienvenue sur la plateforme officielle de NASRI !
+              Découvrez mes réactions, mes vidéos et mes meilleurs moments.
+            </p>
+          </div>
 
-    <h2>NASRI <span>REACTION ROOM</span></h2>
-    <p id="authTitle">Créer ton compte</p>
+          <div class="creator-actions">
+            <button id="subscribeBtn" class="subscribe-btn" type="button">
+              Déconnexion
+            </button>
 
-    <form id="authForm">
-      <input id="authEmail" type="email"
-             placeholder="Adresse Email" required>
+            <a class="instagram-btn"
+               href="https://www.instagram.com/nasri_officieel/"
+               target="_blank" rel="noopener noreferrer">
+              <span class="instagram-logo">◎</span>
+              Instagram ↗
+            </a>
+          </div>
 
-      <input id="authPassword" type="password"
-             placeholder="Mot de passe (6 caractères minimum)"
-             minlength="6" required>
+          <div class="profile-stats">
+            <div>
+              <strong id="subscriberCount">0</strong>
+              <span>Abonnés</span>
+            </div>
+            <div>
+              <strong>VIDEO</strong>
+              <span>Content Creator</span>
+            </div>
+            <div>
+              <strong>REACTION</strong>
+              <span>My Passion</span>
+            </div>
+          </div>
 
-      <button type="submit" id="authSubmit">
-        Créer mon compte
-      </button>
-    </form>
+        </div>
+      </section>
 
-    <p id="authMessage" role="status"></p>
+      <!-- HERO -->
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">
+            <span class="eyebrow-line"></span>
+            LE RAP, VU PAR NASRI
+          </p>
 
-    <button id="switchAuth" type="button">
-      Déjà un compte ? Connexion
-    </button>
+          <h1>On écoute.<br><em>On réagit.</em><br>On débat.</h1>
+
+          <p class="hero-text">
+            Les nouveautés, les surprises et les sons qui font parler.
+            Entre dans la Reaction Room.
+          </p>
+
+          <div class="hero-actions">
+            <a class="button button-primary" href="#videos">
+              Découvrir les vidéos <span>↘</span>
+            </a>
+            <a class="button button-quiet" href="#about">
+              Qui est NASRI ?
+            </a>
+          </div>
+
+          <div class="hero-note">
+            <span class="note-dot"></span>
+            NOUVELLES RÉACTIONS · VIBES TUNISIENNES
+          </div>
+        </div>
+
+        <div class="hero-art">
+          <div class="art-orbit orbit-one"></div>
+          <div class="art-orbit orbit-two"></div>
+          <div class="art-sticker">PLAY<br><b>IT LOUD</b></div>
+          <div class="art-big">N<span>!</span></div>
+          <div class="art-caption">
+            <span>REACTION</span>
+            <strong>ROOM_01</strong>
+          </div>
+          <div class="art-bars">
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+            <i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <span class="art-cross cross-one">✳</span>
+          <span class="art-cross cross-two">✳</span>
+        </div>
+      </section>
+
+      <!-- VIDEOS -->
+      <section id="videos" class="videos-section">
+
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">LE DERNIER CONTENU</p>
+            <h2>La sélection <span>NASRI.</span></h2>
+          </div>
+
+          <label class="search-box">
+            <span>⌕</span>
+            <input id="search" type="search"
+                   placeholder="Chercher un son…"
+                   aria-label="Chercher une vidéo">
+          </label>
+        </div>
+
+        <div class="filters">
+          <button class="filter active" data-filter="all">Tout <b>04</b></button>
+          <button class="filter" data-filter="rap">Rap <b>04</b></button>
+          <button class="filter" data-filter="reaction">Réactions <b>04</b></button>
+        </div>
+
+        <div class="video-grid" id="videoGrid">
+
+          <article class="video-card"
+                   data-category="rap reaction"
+                   data-search="artmasta esserpen tesla">
+            <div class="video-player">
+              <iframe src="https://www.youtube-nocookie.com/embed/bpUnf12G7Fg"
+                      title="NASRI Reaction - Tesla"
+                      loading="lazy" allowfullscreen></iframe>
+            </div>
+            <div class="card-meta">
+              <span>RAP · RÉACTION</span><span>NASRI</span>
+            </div>
+            <h3>Artmasta ft Esserpent — Tesla</h3>
+            <p>La réaction de NASRI.</p>
+          </article>
+
+          <article class="video-card"
+                   data-category="rap reaction"
+                   data-search="3paradox3 مضاد داء الكلب diss track">
+            <div class="video-player">
+              <iframe src="https://www.youtube-nocookie.com/embed/3FgbdpGfkNs"
+                      title="NASRI Reaction - 3PARADOX3"
+                      loading="lazy" allowfullscreen></iframe>
+            </div>
+            <div class="card-meta">
+              <span>DISS TRACK · RÉACTION</span><span>NASRI</span>
+            </div>
+            <h3>3PARADOX3 — مضاد داء الكلب</h3>
+            <p>Écoute, réaction et débat en commentaires.</p>
+          </article>
+
+          <article class="video-card"
+                   data-category="rap reaction"
+                   data-search="nasri reaction">
+            <div class="video-player">
+              <iframe src="https://www.youtube-nocookie.com/embed/GoE8GWlmkLM"
+                      title="NASRI Reaction video 4"
+                      loading="lazy" allowfullscreen></iframe>
+            </div>
+            <div class="card-meta">
+              <span>RAP · RÉACTION</span><span>NASRI</span>
+            </div>
+            <h3>NASRI — Réaction 4</h3>
+            <p>Regarde ma nouvelle réaction !</p>
+          </article>
+
+          <article class="video-card"
+                   data-category="rap reaction"
+                   data-search="nasri reaction">
+            <div class="video-player">
+              <iframe src="https://www.youtube-nocookie.com/embed/Euu1zJXkTMw"
+                      title="NASRI Reaction video 5"
+                      loading="lazy" allowfullscreen></iframe>
+            </div>
+            <div class="card-meta">
+              <span>RAP · RÉACTION</span><span>NASRI</span>
+            </div>
+            <h3>NASRI — Réaction 5</h3>
+            <p>Regarde ma nouvelle réaction !</p>
+          </article>
+
+        </div>
+
+        <p class="empty-state" id="emptyState" hidden>
+          Aucune vidéo trouvée.
+        </p>
+      </section>
+
+      <!-- ABOUT -->
+      <section id="about" class="about-band">
+        <div class="about-mark">N<span>!</span></div>
+        <div>
+          <p class="eyebrow">DERRIÈRE LE MICRO ? NON, DEVANT L’ÉCRAN.</p>
+          <h2>Bienvenue dans mon univers.</h2>
+          <p>
+            Moi, c’est NASRI. Ici, on découvre les sons,
+            on partage nos avis et on garde le débat respectueux.
+          </p>
+        </div>
+        <a class="button button-primary"
+           href="https://www.youtube.com/channel/UCsWZjmuQrQd94xNVlKKpLTw"
+           target="_blank" rel="noopener noreferrer">
+          Rejoindre la chaîne ↗
+        </a>
+      </section>
+
+    </main>
+
+    <footer class="wrap footer">
+      <a class="brand footer-brand" href="#top">
+        <span class="brand-mark">N<span>!</span></span>
+        <span>NASRI<small>REACTION ROOM</small></span>
+      </a>
+      <span>Fait avec passion en Tunisie 🇹🇳</span>
+      <a href="#top">Retour en haut ↑</a>
+    </footer>
+
   </div>
-</div>
-  <script src="script.js"></script>
+  <!-- FIN DU SITE CONTENT -->
 
+
+  <!-- SUPABASE -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- AUTH MODAL: toujours indépendant du contenu -->
+  <div id="authModal" class="auth-modal" hidden>
+    <div class="auth-box">
+      <h2>NASRI <span>REACTION ROOM</span></h2>
+
+      <p id="authTitle">Créer ton compte</p>
+
+      <form id="authForm">
+        <input id="authEmail" type="email"
+               placeholder="Adresse Email" required>
+
+        <input id="authPassword" type="password"
+               placeholder="Mot de passe (6 caractères minimum)"
+               minlength="6" required>
+
+        <button type="submit" id="authSubmit">
+          Créer mon compte
+        </button>
+      </form>
+
+      <p id="authMessage" role="status"></p>
+
+      <button id="switchAuth" type="button">
+        Déjà un compte ? Connexion
+      </button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
 
