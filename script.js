@@ -22,3 +22,29 @@ filters.forEach(button => button.addEventListener('click', () => {
   updateCards();
 }));
 searchInput.addEventListener('input', updateCards);
+
+// Récupérer automatiquement les titres des vidéos YouTube
+document.querySelectorAll(".video-card").forEach(async (card) => {
+  const iframe = card.querySelector("iframe");
+  const titleElement = card.querySelector("h3");
+
+  if (!iframe || !titleElement) return;
+
+  const videoId = new URL(iframe.src).pathname.split("/").pop();
+
+  try {
+    const response = await fetch(
+      `https://www.youtube.com/oembed?url=${encodeURIComponent(
+        "https://www.youtube.com/watch?v=" + videoId
+      )}&format=json`
+    );
+
+    if (!response.ok) throw new Error("Title unavailable");
+
+    const data = await response.json();
+    titleElement.textContent = data.title;
+    card.dataset.search = (card.dataset.search + " " + data.title).toLowerCase();
+  } catch (error) {
+    console.log("Impossible de récupérer le titre :", videoId);
+  }
+});
