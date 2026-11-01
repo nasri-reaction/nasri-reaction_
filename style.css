@@ -580,15 +580,13 @@ h2 span {
 .creator-avatar {
   width: 105px;
   height: 105px;
-  display: grid;
-  place-items: center;
+  display: block;
   border-radius: 50%;
-  background: var(--red);
-  color: white;
-  font: 900 48px 'Barlow Condensed', sans-serif;
+  object-fit: cover;
+  object-position: center;
   border: 4px solid #ffffff18;
+  background: transparent;
 }
-
 .creator-info {
   min-width: 0;
 }
