@@ -1210,3 +1210,21 @@ h2 span {
   font-size: 12px;
   margin-top: 12px;
 }
+#closeAuth {
+  display: none !important;
+}
+
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.92);
+}
+
+.auth-modal[hidden] {
+  display: none !important;
+}
