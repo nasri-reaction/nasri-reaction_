@@ -7,7 +7,6 @@ const db = window.supabase.createClient(
   SUPABASE_KEY
 );
 
-// Elements
 const siteContent = document.getElementById("siteContent");
 const authModal = document.getElementById("authModal");
 const authForm = document.getElementById("authForm");
@@ -21,40 +20,37 @@ const subscribeBtn = document.getElementById("subscribeBtn");
 const subscriberCount = document.getElementById("subscriberCount");
 
 let isLoginMode = false;
+let authReady = false;
 
-// Show site only when logged in
 function updateAccess(session) {
   const loggedIn = Boolean(session);
 
   siteContent.hidden = !loggedIn;
   authModal.hidden = loggedIn;
-
   document.body.style.overflow = loggedIn ? "" : "hidden";
 
-  if (loggedIn) {
-    loadSubscriberCount();
-  }
+  if (loggedIn) loadSubscriberCount();
 }
 
-// Check current login
 async function checkLogin() {
+  siteContent.hidden = true;
+  authModal.hidden = false;
+
   const { data, error } = await db.auth.getSession();
 
   if (error) {
-    console.error("Session error:", error.message);
     updateAccess(null);
     return;
   }
 
   updateAccess(data.session);
+  authReady = true;
 }
 
-// Auth state changes
 db.auth.onAuthStateChange((_event, session) => {
-  updateAccess(session);
+  if (authReady) updateAccess(session);
 });
 
-// Switch between signup and login
 switchAuth.addEventListener("click", () => {
   isLoginMode = !isLoginMode;
 
@@ -73,7 +69,6 @@ switchAuth.addEventListener("click", () => {
   authMessage.textContent = "";
 });
 
-// Signup / Login
 authForm.addEventListener("submit", async (event) => {
   event.preventDefault();
 
@@ -84,68 +79,66 @@ authForm.addEventListener("submit", async (event) => {
   authMessage.textContent = "Chargement...";
 
   try {
-    let result;
-
     if (isLoginMode) {
-      result = await db.auth.signInWithPassword({
+      // Vérification réelle par Supabase
+      const { data, error } = await db.auth.signInWithPassword({
         email,
         password
       });
-    } else {
-      result = await db.auth.signUp({
-        email,
-        password,
-        options: {
-          emailRedirectTo: window.location.origin +
-            window.location.pathname
-        }
-      });
-    }
 
-    if (result.error) {
-      throw result.error;
-    }
+      if (error) throw error;
+      if (!data.session || !data.user) {
+        throw new Error("Connexion refusée.");
+      }
 
-    if (isLoginMode) {
       authMessage.textContent = "Connexion réussie !";
-      updateAccess(result.data.session);
-    } else if (result.data.session) {
-      authMessage.textContent = "Compte créé avec succès !";
-      updateAccess(result.data.session);
-    } else {
-      authMessage.textContent =
-        "Compte créé ! Vérifie ton email pour confirmer ton inscription.";
-    }
+      updateAccess(data.session);
 
+    } else {
+      const { data, error } = await db.auth.signUp({
+        email,
+        password
+      });
+
+      if (error) throw error;
+
+      if (data.session) {
+        updateAccess(data.session);
+        authMessage.textContent = "Compte créé !";
+      } else {
+        authMessage.textContent =
+          "Compte créé ! Tu peux maintenant te connecter.";
+      }
+    }
   } catch (error) {
+    updateAccess(null);
     authMessage.textContent = error.message;
   } finally {
     authSubmit.disabled = false;
   }
 });
 
-// Logout button
 subscribeBtn.addEventListener("click", async () => {
   const { error } = await db.auth.signOut();
 
   if (error) {
     alert("Erreur: " + error.message);
+  } else {
+    updateAccess(null);
   }
 });
 
-// Subscriber count
 async function loadSubscriberCount() {
   const { data, error } = await db.rpc("get_subscriber_count");
 
   if (error) {
-    console.error("Subscriber count error:", error.message);
+    console.error(error.message);
     return;
   }
 
   subscriberCount.textContent = data ?? 0;
 }
 
-// Video search and filters
 const searchInput = document.getElementById("search");
 const videoCards = [...document.querySelectorAll(".video-card")];
 const filterButtons = [...document.querySelectorAll(".filter")];
@@ -160,16 +153,14 @@ function filterVideos() {
   videoCards.forEach((card) => {
     const categories = card.dataset.category || "";
     const searchText = (
-      card.dataset.search + " " + card.textContent
+      (card.dataset.search || "") + " " + card.textContent
     ).toLowerCase();
 
     const matchesFilter =
       currentFilter === "all" ||
       categories.split(" ").includes(currentFilter);
 
-    const matchesSearch = searchText.includes(query);
-    const visible = matchesFilter && matchesSearch;
-
+    const visible = matchesFilter && searchText.includes(query);
     card.hidden = !visible;
 
     if (visible) visibleCount++;
@@ -182,19 +173,15 @@ searchInput.addEventListener("input", filterVideos);
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
-    filterButtons.forEach((item) =>
-      item.classList.remove("active")
-    );
-
+    filterButtons.forEach((item) => item.classList.remove("active"));
     button.classList.add("active");
     currentFilter = button.dataset.filter;
-
     filterVideos();
   });
 });
 
-// Start
 checkLogin();
 
 console.log("NASRI REACTION ROOM loaded successfully!");
+
 
