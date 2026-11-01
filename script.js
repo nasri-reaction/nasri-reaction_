@@ -353,7 +353,36 @@ db.auth.onAuthStateChange((event, session) => {
   }
 
 });
+// ===== NASRI: LOGIN REQUIRED =====
+(function () {
+  const modal = document.getElementById("authModal");
 
+  if (!modal) {
+    console.error("authModal not found");
+    return;
+  }
+
+  function updateAccess(session) {
+    modal.hidden = !!session;
+    document.body.style.overflow = session ? "" : "hidden";
+  }
+
+  // Check login when the website opens
+  db.auth.getSession().then(({ data, error }) => {
+    if (error) {
+      console.error(error);
+      updateAccess(null);
+      return;
+    }
+
+    updateAccess(data.session);
+  });
+
+  // Show the login window again after logout
+  db.auth.onAuthStateChange((_event, session) => {
+    updateAccess(session);
+  });
+})();
 checkSession();
 
 console.log('NASRI REACTION ROOM loaded successfully!');
