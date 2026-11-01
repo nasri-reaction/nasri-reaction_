@@ -48,3 +48,40 @@ document.querySelectorAll(".video-card").forEach(async (card) => {
     console.log("Impossible de récupérer le titre :", videoId);
   }
 });
+
+// Arrêter les autres vidéos quand une nouvelle démarre
+window.addEventListener("message", (event) => {
+  if (!event.origin.includes("youtube.com")) return;
+
+  let data;
+
+  try {
+    data = JSON.parse(event.data);
+  } catch {
+    return;
+  }
+
+  if (data.event !== "onStateChange" || data.info !== 1) return;
+
+  document.querySelectorAll(".video-player iframe").forEach((iframe) => {
+    if (iframe.contentWindow !== event.source) {
+      iframe.contentWindow.postMessage(
+        JSON.stringify({
+          event: "command",
+          func: "pauseVideo",
+          args: []
+        }),
+        "*"
+      );
+    }
+  });
+});
+
+// Activer le contrôle des lecteurs YouTube
+document.querySelectorAll(".video-player iframe").forEach((iframe) => {
+  const url = new URL(iframe.src);
+  url.searchParams.set("enablejsapi", "1");
+  url.searchParams.set("origin", window.location.origin);
+  iframe.src = url.toString();
+});
+
