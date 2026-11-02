@@ -21,7 +21,7 @@ const db = window.supabase.createClient(
 
 // 2. YOUTUBE CONFIGURATION
 
-const YOUTUBE_API_KEY = "YOUR_YOUTUBE_API_KEY";
+const YOUTUBE_API_KEY = "AIzaSyA_eXrvom0aABzjNB2hitsOawoJ48xd4Ug";
 
 const CHANNEL_ID = "UCsWZjmuQrQd94xNVlKKpLTw";
 
